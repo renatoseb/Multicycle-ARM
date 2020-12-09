@@ -53,7 +53,8 @@ module datapath (
 	wire [31:0] A;
 	wire [31:0] ALUResult32;
 	wire [31:0] ALUResult64;
-	wire [31:0] ALUOut;
+	wire [31:0] ALUOut32;
+	wire [31:0] ALUOut64;
 	wire [3:0] RA1;
 	wire [3:0] RA2;
 
@@ -158,11 +159,17 @@ module datapath (
 		.Result64(ALUResult64), 
 		.ALUFlags(ALUFlags)
 		);
-	flopr #(32) aluoutreg(
+	flopr #(32) aluoutreg32(
 		.clk(clk), 
 		.reset(reset), 
-		.d(ALUResult), 
-		.q(ALUOut)
+		.d(ALUResult32), 
+		.q(ALUOut32)
+		);
+	flopr #(32) aluoutreg64(
+		.clk(clk), 
+		.reset(reset), 
+		.d(ALUResult64), 
+		.q(ALUOut64)
 		);
 	mux3 #(32) resmux(
 		.d0(ALUOut), 
