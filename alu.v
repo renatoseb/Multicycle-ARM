@@ -12,21 +12,37 @@ module alu (input [31:0] a,b,
   
   /*
   ALUControl Logic
-  00: sum
-  01: sub
-  10: and
-  11: or
-  10: eor
+  00?: sum
+  001: sub
+  010: and
+  011: or
+  100: MUL
+  101: UMULL
+  110: SMULL
   */
   always @(*)
     casex (ALUControl[1:0]) //case, casex, casez
-      3'b00?: Result = sum;    // ADD
-      3'b001: Result = a - b;  // SUB
-      3'b010: Result = a & b;  // AND
-      3'b011: Result = a | b;  // OR
-      3'b100: Result = a * b;  // MUL
-      3'b101: Result =      ;  // UMULL
-      3'b110: Result =      ;  // SMULL
+      3'b00?: Result32 = sum;    // ADD
+      3'b001: Result32 = a - b;  // SUB
+      3'b010: Result32 = a & b;  // AND
+      3'b011: Result32 = a | b;  // OR
+      3'b100: Result32 = a * b;  // MUL
+      3'b101:                    // UMULL  
+              begin
+                {Result64, Result32} = a * b;  
+              end 
+      3'b110:                    // SMULL
+              begin
+                if(a[31] == 1 && b[31] == 1) begin
+                  {Result64, Result32} = (-a * -b);
+                end
+                else if(a[31] == 1 || b[31] == 1) begin
+                  {Result64, Result32} = -(a * b);
+                end
+                else begin
+                  {Result64, Result32} = (a * b);
+                end
+              
     endcase
   
  //flags: result -> negative, zero
