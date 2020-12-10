@@ -20,6 +20,7 @@ module alu (input [31:0] a,b,
   101: UMULL
   110: SMULL
   */
+  
   always @(*)
     casex (ALUControl[1:0]) //case, casex, casez
       3'b00?: Result32 = sum;    // ADD

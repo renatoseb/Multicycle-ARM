@@ -22,7 +22,8 @@ module datapath (
 	ALUSrcB,
 	ResultSrc,
 	ImmSrc,
-	ALUControl
+	ALUControl,
+	RegSrc64b
 );
 	input wire clk;
 	input wire reset;
@@ -41,6 +42,7 @@ module datapath (
 	input wire [1:0] ResultSrc;
 	input wire [1:0] ImmSrc;
 	input wire [2:0] ALUControl;
+	input wire RegSrc64b;
 	wire [31:0] PCNext;
 	wire [31:0] PC;
 	wire [31:0] ExtImm;
@@ -56,7 +58,10 @@ module datapath (
 	wire [31:0] ALUOut32;
 	wire [31:0] ALUOut64;
 	wire [3:0] RA1;
+	wire [3:0] RA1_1;
 	wire [3:0] RA2;
+	wire [3:0] RA2_1;
+	wire [3:0] RA3;
 
 	// Your datapath hardware goes below. Instantiate each of the 
 	// submodules that you need. Remember that you can reuse hardware
@@ -80,7 +85,7 @@ module datapath (
 		.d1(Result), 
 		.s(AdrSrc),
 		.y(Adr)
-		);
+		);	
 	flopenr #(32) memen(
 		.clk(clk),
 		.reset(reset),
@@ -96,25 +101,49 @@ module datapath (
 		);
 
 	// register file logic
+	// Agregamos los siguiente muxes comparando entre las interpretacion de la 
+	// instruccion(Instr) entre data processing simple y con multiply en el Harris Harris
+	mux2 #(4) muxmul1(
+		.d0(Instr[19:16]),
+		.d1(Instr[3:0]),
+		.s(RegSrc64b),
+		.y(RA1_1)
+		);
+	mux2 #(4) muxmul2(
+		.d0(Instr[3:0]),
+		.d1(Instr[11:8]),
+		.s(RegSrc64b),
+		y(RA2_1)
+		);
+	mux2 #(4) muxmul3(
+		.d0(Instr[15:12]),
+		.d1(Instr[19:16]),
+		.s(RegSrc64b),
+		.y(RA3)
+	);
 	mux2 #(4) ra1mux(
-		.d0(Instr[19:16]), 
+		.d0(RA1_1), 
 		.d1(4'b1111), 
 		.s(RegSrc[0]), 
 		.y(RA1)
 		);
 	mux2 #(4) ra2mux(
-		.d0(Instr[3:0]), 
+		.d0(RA2_1), 
 		.d1(Instr[15:12]), 
 		.s(RegSrc[1]), 
 		.y(RA2)
 		);
+	
 	regfile rf(
 		.clk(clk), 
-		.we3(RegWrite), 
+		.we3(RegWrite),
+		.w_64(),	
 		.ra1(RA1), 
 		.ra2(RA2), 
-		.wa3(Instr[15:12]), 
-		.wd3(Result), 
+		.wa3_32(RA3), 
+		.wa3_64(Instr[15:12]),
+		.wd3_32(Result32), 
+		.wd3_64(Result64),
 		.r15(Result), 
 		.rd1(RD1), 
 		.rd2(RD2)
@@ -152,11 +181,11 @@ module datapath (
 		.y(SrcB)
 		);
 	alu alu(
-		.a(SrcA), 
-		.b(SrcB), 
-		.ALUControl(ALUControl), 
+		.a(SrcA),
+		.b(SrcB),
+		.ALUControl(ALUControl),
 		.Result32(ALUResult32),
-		.Result64(ALUResult64), 
+		.Result64(ALUResult64),
 		.ALUFlags(ALUFlags)
 		);
 	flopr #(32) aluoutreg32(
