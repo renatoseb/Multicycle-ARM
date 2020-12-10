@@ -12,7 +12,8 @@ module regfile (
 	wd3_64,
 	r15,
 	rd1,
-	rd2
+	rd2,
+	64bSrc
 );
 	input wire clk;
 	input wire we3;
@@ -28,9 +29,11 @@ module regfile (
 	reg [31:0] rf [14:0];
 	always @(posedge clk)
 		if (we3)
-			rf[wa3_32] <= wd3_32;
-			if(w_64) begin
+			if(64bSrc) begin
 				rf[wa_64] <= wd3_64;
+			end
+			else begin
+				rf[wa3_32] <= wd3_32;	
 			end
 	assign rd1 = (ra1 == 4'b1111 ? r15 : rf[ra1]);
 	assign rd2 = (ra2 == 4'b1111 ? r15 : rf[ra2]);

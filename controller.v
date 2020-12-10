@@ -14,7 +14,8 @@ module controller (
 	ResultSrc,
 	ImmSrc,
 	ALUControl,
-	RegSrc64b	
+	RegSrc64b,
+	64bSrc
 );
 	input wire clk;
 	input wire reset;
@@ -32,6 +33,7 @@ module controller (
 	output wire [1:0] ImmSrc;
 	output wire [2:0] ALUControl;
 	output wire RegScr64b;
+	output wire 64bSrc;
 	wire [1:0] FlagW;
 	wire PCS;
 	wire NextPC;
@@ -59,7 +61,8 @@ module controller (
 		.RegSrc(RegSrc),
 		.ALUControl(ALUControl),
 		.multiByte(Instr[7:4]),
-		.RegSrc64b(RegSrc64b)
+		.RegSrc64b(RegSrc64b),
+		.64bSrc(64bSrc)
 	);
 	condlogic condlogic_module(
 		.clk(clk),
@@ -97,7 +100,8 @@ module decode (
 	RegSrc,
 	ALUControl,
 	multiByte,
-	RegSrc64b
+	RegSrc64b,
+	64bSrc
 );
 	input wire clk;
 	input wire reset;
@@ -118,10 +122,11 @@ module decode (
 	output wire [1:0] ImmSrc;
 	output wire [1:0] RegSrc;
 	output wire RegSrc64b;
-	// output wire 64bFlag;
+	output wire 64bSrc;
 	output reg [2:0] ALUControl;
 	wire Branch;
 	wire ALUOp;
+	wire 64bFlag;
 
 
 	// To do
@@ -140,7 +145,9 @@ module decode (
 		.RegW(RegW),
 		.MemW(MemW),
 		.Branch(Branch),
-		.ALUOp(ALUOp)
+		.ALUOp(ALUOp),
+		.64bFlag(64bFlag),
+		.64bSrc(64bSrc)
 	);
 
 	

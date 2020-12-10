@@ -23,7 +23,8 @@ module datapath (
 	ResultSrc,
 	ImmSrc,
 	ALUControl,
-	RegSrc64b
+	RegSrc64b,
+	64bSrc
 );
 	input wire clk;
 	input wire reset;
@@ -43,6 +44,7 @@ module datapath (
 	input wire [1:0] ImmSrc;
 	input wire [2:0] ALUControl;
 	input wire RegSrc64b;
+	input wire 64bSrc;
 	wire [31:0] PCNext;
 	wire [31:0] PC;
 	wire [31:0] ExtImm;
@@ -146,7 +148,8 @@ module datapath (
 		.wd3_64(Result64),
 		.r15(Result), 
 		.rd1(RD1), 
-		.rd2(RD2)
+		.rd2(RD2),
+		.64bSrc(64bSrc)
 		);
 	flopr #(32) srcareg(
 		.clk(clk), 

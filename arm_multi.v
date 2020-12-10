@@ -25,6 +25,7 @@ module arm (
 	wire [2:0] ALUControl;
 	wire [1:0] ResultSrc;
 	wire RegSrc64b;
+	wire 64bSrc;
 
 	controller controller_module(
 		.clk(clk),
@@ -42,7 +43,8 @@ module arm (
 		.ResultSrc(ResultSrc),
 		.ImmSrc(ImmSrc),
 		.ALUControl(ALUControl),
-		.RegSrc64b(RegSrc64b)
+		.RegSrc64b(RegSrc64b),
+		.64bSrc(64bSrc)
 	);
 	datapath datapath_module(
 		.clk(clk),
@@ -62,7 +64,8 @@ module arm (
 		.ResultSrc(ResultSrc),
 		.ImmSrc(ImmSrc),
 		.ALUControl(ALUControl),
-		.RegSrc64b(RegSrc64b)
+		.RegSrc64b(RegSrc64b),
+		.64bSrc(64bSrc)
 	);
 endmodule
 
