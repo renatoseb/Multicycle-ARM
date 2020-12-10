@@ -28,11 +28,11 @@ module alu (input [31:0] a,b,
       3'b010: Result32 = a & b;  // AND
       3'b011: Result32 = a | b;  // OR
       3'b100: Result32 = a * b;  // MUL
-      3'b101:                    // UMULL  
+      3'b110:                    // SMULL
               begin
                 {Result64, Result32} = a * b;  
               end 
-      3'b110:                    // SMULL
+      3'b101:                    // UMULL 
               begin
                 if(a[31] == 1 && b[31] == 1) begin
                   {Result64, Result32} = (-a * -b);
