@@ -248,7 +248,7 @@ module datapath (
 		.q(ALUOut64)
 		);
 	mux3 #(32) resmux(
-		.d0(ALUOut), 
+		.d0(ALUOut32), 
 		.d1(Data), 
 		.d2(ALUResult32), 
 		.s(ResultSrc), 
