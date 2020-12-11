@@ -1,5 +1,5 @@
 $date
-	Fri Dec 11 02:59:32 2020
+	Fri Dec 11 03:08:11 2020
 $end
 $version
 	Icarus Verilog
@@ -271,16 +271,16 @@ $var wire 32 Z" R2 [31:0] $end
 $var wire 32 [" sum2 [31:0] $end
 $var wire 32 \" sum [31:0] $end
 $var wire 32 ]" result [31:0] $end
-$var wire 32 ^" manR2 [31:0] $end
-$var wire 32 _" manR1 [31:0] $end
-$var wire 32 `" manMinShift [31:0] $end
-$var wire 32 a" manMin [31:0] $end
-$var wire 32 b" manMax [31:0] $end
-$var wire 32 c" expRshift [31:0] $end
-$var wire 32 d" expResult [31:0] $end
-$var wire 32 e" expR2 [31:0] $end
-$var wire 32 f" expR1 [31:0] $end
-$var wire 32 g" dif [31:0] $end
+$var wire 32 ^" mantisaWithShift [31:0] $end
+$var wire 32 _" mantisaMenor [31:0] $end
+$var wire 32 `" mantisaMayor [31:0] $end
+$var wire 32 a" mantisa2 [31:0] $end
+$var wire 32 b" mantisa1 [31:0] $end
+$var wire 32 c" exponenteWithshift [31:0] $end
+$var wire 32 d" exponenteResult [31:0] $end
+$var wire 32 e" exponente2 [31:0] $end
+$var wire 32 f" exponente1 [31:0] $end
+$var wire 32 g" diferencia [31:0] $end
 $upscope $end
 $upscope $end
 $scope module fpu_regfile $end
@@ -665,16 +665,16 @@ $var wire 32 }$ R2 [31:0] $end
 $var wire 32 ~$ sum2 [31:0] $end
 $var wire 32 !% sum [31:0] $end
 $var wire 32 "% result [31:0] $end
-$var wire 32 #% manR2 [31:0] $end
-$var wire 32 $% manR1 [31:0] $end
-$var wire 32 %% manMinShift [31:0] $end
-$var wire 32 &% manMin [31:0] $end
-$var wire 32 '% manMax [31:0] $end
-$var wire 32 (% expRshift [31:0] $end
-$var wire 32 )% expResult [31:0] $end
-$var wire 32 *% expR2 [31:0] $end
-$var wire 32 +% expR1 [31:0] $end
-$var wire 32 ,% dif [31:0] $end
+$var wire 32 #% mantisaWithShift [31:0] $end
+$var wire 32 $% mantisaMenor [31:0] $end
+$var wire 32 %% mantisaMayor [31:0] $end
+$var wire 32 &% mantisa2 [31:0] $end
+$var wire 32 '% mantisa1 [31:0] $end
+$var wire 32 (% exponenteWithshift [31:0] $end
+$var wire 32 )% exponenteResult [31:0] $end
+$var wire 32 *% exponente2 [31:0] $end
+$var wire 32 +% exponente1 [31:0] $end
+$var wire 32 ,% diferencia [31:0] $end
 $upscope $end
 $upscope $end
 $scope module fpu_regfile $end
@@ -1432,8 +1432,8 @@ b0xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ]"
 b0xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx n"
 bx ~$
 bx (%
-b1xxxxxxxxxxxxxxxxxxxxxxx '%
-b1xxxxxxxxxxxxxxxxxxxxxxx &%
+b1xxxxxxxxxxxxxxxxxxxxxxx %%
+b1xxxxxxxxxxxxxxxxxxxxxxx $%
 b1000 J$
 b1000 X%
 b1000 e%
@@ -1442,8 +1442,8 @@ b1000 Y%
 b1000 ^%
 bx ["
 bx c"
-b1xxxxxxxxxxxxxxxxxxxxxxx b"
-b1xxxxxxxxxxxxxxxxxxxxxxx a"
+b1xxxxxxxxxxxxxxxxxxxxxxx `"
+b1xxxxxxxxxxxxxxxxxxxxxxx _"
 b1000 '"
 b1000 5#
 b1000 B#
@@ -1483,12 +1483,12 @@ b1000 .#
 b1000 3#
 04
 b0xxxxxxxx *%
-b1xxxxxxxxxxxxxxxxxxxxxxx #%
+b1xxxxxxxxxxxxxxxxxxxxxxx &%
 bx !%
-bx %%
+bx #%
 bx ,%
 b0xxxxxxxx +%
-b1xxxxxxxxxxxxxxxxxxxxxxx $%
+b1xxxxxxxxxxxxxxxxxxxxxxx '%
 b1111 Y$
 b1111 x$
 b1111 `%
@@ -1515,12 +1515,12 @@ b11100010100000000010000000000101 h%
 0f#
 0Z#
 b0xxxxxxxx e"
-b1xxxxxxxxxxxxxxxxxxxxxxx ^"
+b1xxxxxxxxxxxxxxxxxxxxxxx a"
 bx \"
-bx `"
+bx ^"
 bx g"
 b0xxxxxxxx f"
-b1xxxxxxxxxxxxxxxxxxxxxxx _"
+b1xxxxxxxxxxxxxxxxxxxxxxx b"
 b1111 6"
 b1111 U"
 b1111 =#
