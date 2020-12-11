@@ -24,7 +24,7 @@ module datapath (
 	ImmSrc,
 	ALUControl,
 	RegSrc64b,
-	64bSrc,
+	Src_64b,
 	FPUWrite
 );
 	input wire clk;
@@ -45,7 +45,7 @@ module datapath (
 	input wire [1:0] ImmSrc;
 	input wire [2:0] ALUControl;
 	input wire RegSrc64b;
-	input wire 64bSrc;
+	input wire Src_64b;
 	input wire FPUWrite;
 
 	wire [31:0] PCNext;
@@ -149,7 +149,6 @@ module datapath (
 	regfile rf(
 		.clk(clk), 
 		.we3(RegWrite),
-		.w_64(),	
 		.ra1(RA1), 
 		.ra2(RA2), 
 		.wa3_32(RA3), 
@@ -159,7 +158,7 @@ module datapath (
 		.r15(Result), 
 		.rd1(RD1), 
 		.rd2(RD2),
-		.64bSrc(64bSrc)
+		.Src_64b(Src_64b)
 		);
 	flopr #(32) srcareg(
 		.clk(clk), 

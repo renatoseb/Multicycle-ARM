@@ -3,7 +3,6 @@
 module regfile (
 	clk,
 	we3,
-	w_64,
 	ra1,
 	ra2,
 	wa3_32,
@@ -13,12 +12,11 @@ module regfile (
 	r15,
 	rd1,
 	rd2,
-	64bSrc
+	Src_64b
 );
 	input wire clk;
 	input wire we3;
-	input wire 64bSrc;
-	input wire w_64;
+	input wire Src_64b;
 	input wire [3:0] ra1;
 	input wire [3:0] ra2;
 	input wire [3:0] wa3_32;
@@ -33,7 +31,7 @@ module regfile (
 	always @(posedge clk)
 		if (we3)
 			begin
-				if(64bSrc) begin
+				if(Src_64b) begin
 					rf[wa_64] <= wd3_64;
 				end
 				else begin

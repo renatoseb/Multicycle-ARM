@@ -15,7 +15,7 @@ module controller (
 	ImmSrc,
 	ALUControl,
 	RegSrc64b,
-	64bSrc,
+	Src_64b,
 	FPUWrite
 );
 	input wire clk;
@@ -36,7 +36,7 @@ module controller (
 	output wire [1:0] ImmSrc;
 	output wire [2:0] ALUControl;
 	output wire RegScr64b;
-	output wire 64bSrc;
+	output wire Src_64b;
 	wire [1:0] FlagW;
 	wire PCS;
 	wire NextPC;
@@ -67,7 +67,7 @@ module controller (
 		.ALUControl(ALUControl),
 		.multiByte(Instr[7:4]),
 		.RegSrc64b(RegSrc64b),
-		.64bSrc(64bSrc),
+		.Src_64b(Src_64b),
 		.FpuW(FpuW)
 	);
 	condlogic condlogic_module(
@@ -107,7 +107,7 @@ module decode (
 	ALUControl,
 	multiByte,
 	RegSrc64b,
-	64bSrc,
+	Src_64b,
 	FpuW
 );
 	input wire clk;
@@ -129,14 +129,14 @@ module decode (
 	output wire [1:0] ImmSrc;
 	output wire [1:0] RegSrc;
 	output wire RegSrc64b;
-	output wire 64bSrc;
+	output wire Src_64b;
 	output wire FpuW;
 
 	output reg [2:0] ALUControl;
 
 	wire Branch;
 	wire ALUOp;
-	wire 64bFlag;
+	reg 64bFlag;
 
 
 	// To do
@@ -157,7 +157,7 @@ module decode (
 		.Branch(Branch),
 		.ALUOp(ALUOp),
 		.64bFlag(64bFlag),
-		.64bSrc(64bSrc),
+		.Src_64b(Src_64b),
 		.FpuW(FpuW)
 	);
 
@@ -167,7 +167,7 @@ module decode (
         if (ALUOp) 
 			begin // which Data-processing Instr?
 				64bFlag = 0;
-				if(multiByte == 3'b1001) begin
+				if(multiByte == 4'b1001) begin
 					case(Funct[3:1]) // Check cmd
 						3'b000: ALUControl = 3'b100; // MUL
 						3'b100: begin
@@ -208,7 +208,7 @@ module decode (
     assign ImmSrc = Op;
 
     //DOING
-	assign RegSrc64b = (multiByte == 3'b1001) && (Funct[3:1] == 3'b101 || Funct[3:1] == 3'b110); 
+	assign RegSrc64b = (multiByte == 4'b1001) && (Funct[3:1] == 3'b101 || Funct[3:1] == 3'b110); 
     assign RegSrc[0] = (Op == 2'b10); // read PC on Branch
     assign RegSrc[1] = (Op == 2'b01); // read Rd on STR 
 

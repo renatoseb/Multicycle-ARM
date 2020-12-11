@@ -25,7 +25,7 @@ module arm (
 	wire [2:0] ALUControl;
 	wire [1:0] ResultSrc;
 	wire RegSrc64b;
-	wire 64bSrc;
+	wire Src_64b;
 	wire FPUWrite;
 
 	controller controller_module(
@@ -45,7 +45,7 @@ module arm (
 		.ImmSrc(ImmSrc),
 		.ALUControl(ALUControl),
 		.RegSrc64b(RegSrc64b),
-		.64bSrc(64bSrc),
+		.Src_64b(Src_64b),
 		.FPUWrite(FPUWrite)
 	);
 	datapath datapath_module(
@@ -67,7 +67,7 @@ module arm (
 		.ImmSrc(ImmSrc),
 		.ALUControl(ALUControl),
 		.RegSrc64b(RegSrc64b),
-		.64bSrc(64bSrc),
+		.Src_64b(Src_64b),
 		.FPUWrite(FPUWrite)
 	);
 endmodule

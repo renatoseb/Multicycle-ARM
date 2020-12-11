@@ -14,7 +14,7 @@ module mainfsm (
 	Branch,
 	ALUOp,
 	64bFlag,
-	64bSrc,
+	Src_64b,
 	FpuW
 );
 	input wire clk;
@@ -32,7 +32,7 @@ module mainfsm (
 	output wire MemW;
 	output wire Branch;
 	output wire ALUOp;
-	output wire 64bSrc;
+	output wire Src_64b;
 	output wire FpuW;
 
 	reg [3:0] state;
@@ -93,7 +93,7 @@ module mainfsm (
             MEMWR:    nextstate = FETCH;
 			EXECUTER:
 				begin
-					if(64bFlag == 1) begin
+					if(64bFlag == 1'b1) begin
 						nextstate = ALU64BW;
 					end
 					else begin
@@ -102,7 +102,7 @@ module mainfsm (
 				end
             EXECUTEI:
 				begin
-					if(64bFlag == 1) begin
+					if(64bFlag == 1'b1) begin
 						nextstate = ALU64BW;
 					end
 					else begin
@@ -140,5 +140,5 @@ module mainfsm (
 			default: controls =   15'bxxxxxxxxxxxxxxx;
 		endcase
     
-	assign {FpuW,64bSrc,NextPC, Branch, MemW, RegW, IRWrite, AdrSrc, ResultSrc, ALUSrcA, ALUSrcB, ALUOp} = controls;
+	assign {FpuW,Src_64b,NextPC, Branch, MemW, RegW, IRWrite, AdrSrc, ResultSrc, ALUSrcA, ALUSrcB, ALUOp} = controls;
 endmodule
