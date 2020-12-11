@@ -125,7 +125,7 @@ module datapath (
 		.d0(Instr[3:0]),
 		.d1(Instr[11:8]),
 		.s(RegSrc64b),
-		y(RA2_1)
+		.y(RA2_1)
 		);
 	mux2 #(4) muxmul3(
 		.d0(Instr[15:12]),

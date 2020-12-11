@@ -136,7 +136,7 @@ module decode (
 
 	wire Branch;
 	wire ALUOp;
-	reg 64bFlag;
+	reg Flag_64b;
 
 
 	// To do
@@ -156,7 +156,7 @@ module decode (
 		.MemW(MemW),
 		.Branch(Branch),
 		.ALUOp(ALUOp),
-		.64bFlag(64bFlag),
+		.Flag_64b(Flag_64b),
 		.Src_64b(Src_64b),
 		.FpuW(FpuW)
 	);
@@ -166,16 +166,16 @@ module decode (
     always @(*)
         if (ALUOp) 
 			begin // which Data-processing Instr?
-				64bFlag = 0;
+				Flag_64b = 0;
 				if(multiByte == 4'b1001) begin
 					case(Funct[3:1]) // Check cmd
 						3'b000: ALUControl = 3'b100; // MUL
 						3'b100: begin
-							64bFlag = 1;
+							Flag_64b = 1;
 							ALUControl = 3'b101; // UMULL
 						end
 						3'b110: begin
-							64bFlag = 1;
+							Flag_64b = 1;
 							ALUControl = 3'b110; // SMULL
 						end
 						default: ALUControl = 3'bX;  // No implemented
