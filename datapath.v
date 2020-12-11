@@ -24,7 +24,8 @@ module datapath (
 	ImmSrc,
 	ALUControl,
 	RegSrc64b,
-	64bSrc
+	64bSrc,
+	FPUWrite
 );
 	input wire clk;
 	input wire reset;
@@ -45,6 +46,8 @@ module datapath (
 	input wire [2:0] ALUControl;
 	input wire RegSrc64b;
 	input wire 64bSrc;
+	input wire FPUWrite;
+
 	wire [31:0] PCNext;
 	wire [31:0] PC;
 	wire [31:0] ExtImm;
@@ -64,6 +67,13 @@ module datapath (
 	wire [3:0] RA2;
 	wire [3:0] RA2_1;
 	wire [3:0] RA3;
+
+	wire [31:0] FRD1;
+    wire [31:0] FRD2;
+    wire [31:0] FA;
+    wire [31:0] FWriteData;
+    wire [31:0] FResult;
+    wire [31:0] FPUResult;
 
 	// Your datapath hardware goes below. Instantiate each of the 
 	// submodules that you need. Remember that you can reuse hardware
@@ -191,6 +201,42 @@ module datapath (
 		.Result64(ALUResult64),
 		.ALUFlags(ALUFlags)
 		);
+
+	//FLOATING POINT UNIT
+	fpu_regfile fpu_regfile(
+        .clk(clk),
+        .we3(FPUWrite),
+        .ra1(Instr[19:16]),
+        .ra2(Instr[3:0]),
+        .wa3(Instr[15:12]),
+        .wd3(FResult),
+        .rd1(FRD1),
+        .rd2(FRD2)
+    );
+
+    flopr #(64) frdreg(
+        .clk(clk),
+        .reset(reset),
+        .d({FRD1, FRD2}),
+        .q({FA, FWriteData})
+    );
+
+    fpu f(
+        .a(FA),
+        .b(FWriteData),
+        .double(Instr[8]),
+        .Result(FPUResult)
+    );
+
+    flopr #(32) fpureg(
+        .clk(clk),
+        .reset(reset),
+        .d(FPUResult),
+        .q(FResult)
+    );
+
+	//
+
 	flopr #(32) aluoutreg32(
 		.clk(clk), 
 		.reset(reset), 

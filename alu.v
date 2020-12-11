@@ -43,7 +43,7 @@ module alu (input [31:0] a,b,
                 else begin
                   {Result64, Result32} = (a * b);
                 end
-              
+              end       
     endcase
   
  //flags: result -> negative, zero

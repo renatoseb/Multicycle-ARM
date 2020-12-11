@@ -15,7 +15,8 @@ module controller (
 	ImmSrc,
 	ALUControl,
 	RegSrc64b,
-	64bSrc
+	64bSrc,
+	FPUWrite
 );
 	input wire clk;
 	input wire reset;
@@ -25,6 +26,8 @@ module controller (
 	output wire MemWrite;
 	output wire RegWrite;
 	output wire IRWrite;
+	output wire FPUWrite;
+
 	output wire AdrSrc;
 	output wire [1:0] RegSrc;
 	output wire [1:0] ALUSrcA;
@@ -39,6 +42,8 @@ module controller (
 	wire NextPC;
 	wire RegW;
 	wire MemW;
+	wire FpuW;
+
 
 
 	decode decoder_module(
@@ -62,7 +67,8 @@ module controller (
 		.ALUControl(ALUControl),
 		.multiByte(Instr[7:4]),
 		.RegSrc64b(RegSrc64b),
-		.64bSrc(64bSrc)
+		.64bSrc(64bSrc),
+		.FpuW(FpuW)
 	);
 	condlogic condlogic_module(
 		.clk(clk),
@@ -101,7 +107,8 @@ module decode (
 	ALUControl,
 	multiByte,
 	RegSrc64b,
-	64bSrc
+	64bSrc,
+	FpuW
 );
 	input wire clk;
 	input wire reset;
@@ -123,7 +130,10 @@ module decode (
 	output wire [1:0] RegSrc;
 	output wire RegSrc64b;
 	output wire 64bSrc;
+	output wire FpuW;
+
 	output reg [2:0] ALUControl;
+
 	wire Branch;
 	wire ALUOp;
 	wire 64bFlag;
@@ -147,7 +157,8 @@ module decode (
 		.Branch(Branch),
 		.ALUOp(ALUOp),
 		.64bFlag(64bFlag),
-		.64bSrc(64bSrc)
+		.64bSrc(64bSrc),
+		.FpuW(FpuW)
 	);
 
 	
@@ -171,11 +182,11 @@ module decode (
 					endcase
 				end
 				case(Funct[4:1])
-					4'b0100: ALUControl = 2'b000; // ADD
-					4'b0010: ALUControl = 2'b001; // SUB
-					4'b0000: ALUControl = 2'b010; // AND
-					4'b1100: ALUControl = 2'b011; // ORR
-					default: ALUControl = 2'bx; // unimplemented
+					4'b0100: ALUControl = 3'b000; // ADD
+					4'b0010: ALUControl = 3'b001; // SUB
+					4'b0000: ALUControl = 3'b010; // AND
+					4'b1100: ALUControl = 3'b011; // ORR
+					default: ALUControl = 3'bxxx; // unimplemented
 				endcase
 				FlagW[1] = Funct[0];    // update N & Z flags if S bit is set
 				FlagW[0] = Funct[0] & (ALUControl == 2'b00 | ALUControl == 2'b01);
@@ -218,7 +229,8 @@ module condlogic (
 	MemW,
 	PCWrite,
 	RegWrite,
-	MemWrite
+	MemWrite,
+	FPUWrite
 );
 	input wire clk;
 	input wire reset;
@@ -229,9 +241,12 @@ module condlogic (
 	input wire NextPC;
 	input wire RegW;
 	input wire MemW;
+	input wire FpuW;
+
 	output wire PCWrite;
 	output wire RegWrite;
 	output wire MemWrite;
+	output wire FPUWrite;
 
 	wire [1:0] FlagWrite;
 	wire [3:0] Flags;
@@ -267,6 +282,7 @@ module condlogic (
     assign FlagWrite = FlagW & {2 {CondEx}};
 	assign RegWrite = RegW & CondexOut;
 	assign MemWrite = MemW & CondexOut;
+	assign FpuWrite = FpuW & CondexOut;
 	assign PCWrite = (PCS & CondexOut) | NextPC;
 
 endmodule
