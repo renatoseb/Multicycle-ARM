@@ -1,4 +1,4 @@
-module controller (
+module controller(
 	clk,
 	reset,
 	Instr,
@@ -26,7 +26,6 @@ module controller (
 	output wire MemWrite;
 	output wire RegWrite;
 	output wire IRWrite;
-	output wire FPUWrite;
 
 	output wire AdrSrc;
 	output wire [1:0] RegSrc;
@@ -35,8 +34,10 @@ module controller (
 	output wire [1:0] ResultSrc;
 	output wire [1:0] ImmSrc;
 	output wire [2:0] ALUControl;
-	output wire RegScr64b;
+	output wire RegSrc64b;
 	output wire Src_64b;
+	output wire FPUWrite;
+
 	wire [1:0] FlagW;
 	wire PCS;
 	wire NextPC;
