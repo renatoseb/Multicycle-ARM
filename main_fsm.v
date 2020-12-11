@@ -32,12 +32,12 @@ module mainfsm (
 	output wire MemW;
 	output wire Branch;
 	output wire ALUOp;
-	output wire Src_64b;
+	inout Src_64b;
 	output wire FpuW;
 
 	reg [3:0] state;
 	reg [3:0] nextstate;
-	reg [12:0] controls;
+	reg [14:0] controls;
 	localparam [3:0] FETCH = 0;
     localparam [3:0] DECODE = 1;
     localparam [3:0] MEMADR = 2;
@@ -136,7 +136,7 @@ module mainfsm (
 			BRANCH: controls =    15'b000100001000010;
 			EXECUTEF: controls =  15'b000000000000000;
 			FPUWB:    controls =  15'b100000000000000;				
-			ALU64BW: control =    15'b010001000000000;
+			ALU64BW: controls =    15'b010001000000000;
 			default: controls =   15'bxxxxxxxxxxxxxxx;
 		endcase
     

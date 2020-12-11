@@ -55,7 +55,7 @@ module fpu(R1, R2, Result);
     output wire [31:0] Result;
 
 
-    fp_adder float_add(
+    fpu_adder float_add(
         .R1(R1),
         .R2(R2),
         .result(Result)
