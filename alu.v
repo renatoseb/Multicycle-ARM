@@ -47,8 +47,8 @@ module alu (input [31:0] a,b,
     endcase
   
  //flags: result -> negative, zero
-  assign negative = Result[31];
-  assign zero = (Result == 32'b0);
+  assign negative = Result32[31];
+  assign zero = (Result32 == 32'b0);
   //flags: additional logic -> v, c
   assign carry = (ALUControl[1]==1'b0) & sum[32];
   assign overflow = (ALUControl[1]==1'b0) & ~(a[31] ^ b[31] ^ ALUControl[0]) & (a[31] ^ sum[31]);
