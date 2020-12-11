@@ -221,9 +221,8 @@ module datapath (
     );
 
     fpu f(
-        .a(FA),
-        .b(FWriteData),
-        .double(Instr[8]),
+        .R1(FA),
+        .R2(FWriteData),
         .Result(FPUResult)
     );
 

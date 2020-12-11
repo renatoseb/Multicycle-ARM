@@ -21,15 +21,15 @@ module fpu_adder (R1, R2, result);
     wire [31:0] manR2 = {8'b0, 1'b1, R2[22:0]};
 
     //compare exponent
-    wire [31:0] dif = expA - expB;
+    wire [31:0] dif = expR1 - expR2;
     //save the higher exponent in exponent result
-    wire [31:0] expResult = (dif > 0) ? expA : expB;
+    wire [31:0] expResult = (dif > 0) ? expR1 : expR2;
 
     wire [31:0] manMin;
     wire [31:0] manMax;
 
     //assign mantissas depende of the result of dif
-    assign {manMin, manMax} = dif > 0 ? {manB, manA} : {manA, manB};
+    assign {manMin, manMax} = (dif > 0) ? {manR2, manR1} : {manR1, manR2};
 
     //shifting the result of dif in the min mantissa 
     wire [31:0] manMinShift = manMin >> dif;
@@ -41,7 +41,7 @@ module fpu_adder (R1, R2, result);
     wire [31:0] sum2 = (sum[31:24] != 0) ? sum >> 1 : sum;
 
     //adjust the exponent
-    wire [31:0] expRshift = sum[31:24] != 0 ? expR + 1 : expR;
+    wire [31:0] expRshift = sum[31:24] != 0 ? expResult + 1 : expResult;
 
     //concatenate the sign bit, exponent and mantissa
     assign result = {1'b0, expRshift[7:0], sum2[22:0]};
