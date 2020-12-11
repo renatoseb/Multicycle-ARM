@@ -35,7 +35,7 @@ module controller (
 	output wire [1:0] ResultSrc;
 	output wire [1:0] ImmSrc;
 	output wire [2:0] ALUControl;
-	output wire RegScr64b;
+	output wire RegSrc64b;
 	output wire Src_64b;
 	wire [1:0] FlagW;
 	wire PCS;
