@@ -32,7 +32,7 @@ module regfile (
 		if (we3)
 			begin
 				if(Src_64b) begin
-					rf[wa_64] <= wd3_64;
+					rf[wa3_64] <= wd3_64;
 				end
 				else begin
 					rf[wa3_32] <= wd3_32;	

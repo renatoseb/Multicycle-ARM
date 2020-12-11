@@ -153,8 +153,8 @@ module datapath (
 		.ra2(RA2), 
 		.wa3_32(RA3), 
 		.wa3_64(Instr[15:12]),
-		.wd3_32(Result32), 
-		.wd3_64(Result64),
+		.wd3_32(Result), 
+		.wd3_64(ALUOut64	),
 		.r15(Result), 
 		.rd1(RD1), 
 		.rd2(RD2),
@@ -250,11 +250,12 @@ module datapath (
 	mux3 #(32) resmux(
 		.d0(ALUOut), 
 		.d1(Data), 
-		.d2(ALUResult), 
+		.d2(ALUResult32), 
 		.s(ResultSrc), 
 		.y(Result)
 		);
 
+	assign PCNext = Result;
 endmodule
 
 
