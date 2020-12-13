@@ -16,9 +16,9 @@ module alu (input [31:0] a,b,
   001: sub
   010: and
   011: or
-  100: MUL
-  101: UMULL
-  110: SMULL
+  101: MUL
+  110: UMULL
+  111: SMULL
   */
   
   always @(*)
@@ -27,12 +27,12 @@ module alu (input [31:0] a,b,
       3'b001: Result32 = a - b;  // SUB
       3'b010: Result32 = a & b;  // AND
       3'b011: Result32 = a | b;  // OR
-      3'b100: Result32 = a * b;  // MUL
+      3'b101: Result32 = a * b;  // MUL
       3'b110:                    // SMULL
               begin
                 {Result64, Result32} = a * b;  
               end 
-      3'b101:                    // UMULL 
+      3'b111:                    // UMULL 
               begin
                 if(a[31] == 1 && b[31] == 1) begin
                   {Result64, Result32} = (-a * -b);
