@@ -82,7 +82,8 @@ module controller (
 		.MemW(MemW),
 		.PCWrite(PCWrite),
 		.RegWrite(RegWrite),
-		.MemWrite(MemWrite)
+		.MemWrite(MemWrite),
+		.FPUWrite(FPUWrite)
 	);
 endmodule
 

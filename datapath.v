@@ -208,6 +208,10 @@ module datapath (
         .ra1(Instr[19:16]),
         .ra2(Instr[3:0]),
         .wa3(Instr[15:12]),
+		.A1(Instr[7]),
+        .A2(Instr[5]),
+        .A3(Instr[6]),
+        .single(Instr[8]),
         .wd3(FResult),
         .rd1(FRD1),
         .rd2(FRD2)
@@ -223,6 +227,7 @@ module datapath (
     fpu f(
         .R1(FA),
         .R2(FWriteData),
+		.single(Instr[8]),
         .Result(FPUResult)
     );
 
